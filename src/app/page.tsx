@@ -6,6 +6,7 @@ import { UnitGrid } from "@/components/unit-grid";
 import { CalendarView } from "@/components/calendar-view";
 import { usePlannerData } from "@/hooks/use-planner-data";
 import { UnitEditorModal } from "@/components/unit-editor-modal";
+import { TaskEditorModal } from "@/components/task-editor-modal";
 import { Unit } from "@/types";
 
 export default function Plan() {
@@ -17,8 +18,11 @@ export default function Plan() {
   } = usePlannerData();
 
   // Modal State
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
   const [editingUnitId, setEditingUnitId] = useState<string | null>(null);
+
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [targetUnitId, setTargetUnitId] = useState<string | null>(null);
 
   if (!isLoaded) {
     return (
@@ -28,19 +32,27 @@ export default function Plan() {
     );
   }
 
-  const handleAddTask = (unitId: string) => {
-    const title = prompt("New Task Name:");
-    if (title) addTask(unitId, title);
+  // --- Task Handlers ---
+  const handleAddTaskClick = (unitId: string) => {
+    setTargetUnitId(unitId);
+    setIsTaskModalOpen(true);
   };
 
+  const handleSaveTask = (title: string) => {
+    if (targetUnitId) {
+      addTask(targetUnitId, title);
+    }
+  };
+
+  // --- Unit Handlers ---
   const handleEditUnit = (unitId: string) => {
     setEditingUnitId(unitId);
-    setIsModalOpen(true);
+    setIsUnitModalOpen(true);
   };
 
   const handleAddUnitClick = () => {
     setEditingUnitId(null);
-    setIsModalOpen(true);
+    setIsUnitModalOpen(true);
   };
 
   const handleSaveUnit = (title: string, type: Unit["type"]) => {
@@ -66,7 +78,7 @@ export default function Plan() {
           units={units}
           onReorder={reorderUnits}
           onToggleTask={toggleTask}
-          onAddTask={handleAddTask}
+          onAddTask={handleAddTaskClick}
           onDeleteTask={deleteTask}
           onEditUnit={handleEditUnit}
           onAddUnitClick={handleAddUnitClick}
@@ -80,11 +92,19 @@ export default function Plan() {
         />
       )}
 
+      {/* Unit Modal */}
       <UnitEditorModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isUnitModalOpen}
+        onClose={() => setIsUnitModalOpen(false)}
         onSave={handleSaveUnit}
         initialData={getEditingUnitData()}
+      />
+
+      {/* Task Modal */}
+      <TaskEditorModal
+        isOpen={isTaskModalOpen}
+        onClose={() => setIsTaskModalOpen(false)}
+        onSave={handleSaveTask}
       />
     </main>
   );

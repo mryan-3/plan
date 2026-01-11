@@ -29,7 +29,7 @@ export function UnitCard({ unit, index, onToggleTask, onAddTask, onDeleteTask, o
             ${snapshot.isDragging ? "shadow-2xl scale-[1.02] ring-2 ring-[#ff8154] z-50" : "hover:bg-[#324046]"}`}
           style={provided.draggableProps.style}
         >
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+          <div className="absolute top-2 right-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity z-10">
               <button 
                 onClick={() => { if(confirm("Delete this unit?")) onDeleteUnit(unit.id) }}
                 className="text-gray-600 hover:text-red-500 p-1"
@@ -50,7 +50,7 @@ export function UnitCard({ unit, index, onToggleTask, onAddTask, onDeleteTask, o
                 </span>
                 <button 
                   onClick={onEditTitle}
-                  className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-white transition-opacity"
+                  className="opacity-100 md:opacity-0 md:group-hover:opacity-100 text-gray-500 hover:text-white transition-opacity"
                 >
                   <PencilSimple size={12}/>
                 </button>
@@ -80,7 +80,12 @@ export function UnitCard({ unit, index, onToggleTask, onAddTask, onDeleteTask, o
                 <span className={`text-sm leading-snug ${task.completed ? "text-gray-500 line-through" : "text-gray-300 group-hover/task:text-white transition-colors"}`}>
                   {task.title}
                 </span>
-                <button onClick={() => onDeleteTask(unit.id, task.id)} className="ml-auto opacity-0 group-hover/task:opacity-100 text-gray-600 hover:text-red-500"><Trash size={14}/></button>
+                <button 
+                  onClick={() => onDeleteTask(unit.id, task.id)} 
+                  className="ml-auto text-gray-700 hover:text-red-500 p-1 md:opacity-0 md:group-hover/task:opacity-100 transition-opacity"
+                >
+                  <Trash size={16}/>
+                </button>
               </div>
             ))}
             {unit.tasks.length === 0 && <p className="text-sm text-gray-600 italic">No missions active.</p>}
