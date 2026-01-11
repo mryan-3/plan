@@ -9,12 +9,12 @@ interface UnitGridProps {
   onToggleTask: (unitId: string, taskId: string) => void;
   onAddTask: (unitId: string) => void;
   onDeleteTask: (unitId: string, taskId: string) => void;
-  onEditTitle: (unitId: string, currentTitle: string) => void;
-  onAddUnit: () => void;
+  onEditUnit: (unitId: string) => void;
+  onAddUnitClick: () => void;
   onDeleteUnit: (unitId: string) => void;
 }
 
-export function UnitGrid({ units, onReorder, onToggleTask, onAddTask, onDeleteTask, onEditTitle, onAddUnit, onDeleteUnit }: UnitGridProps) {
+export function UnitGrid({ units, onReorder, onToggleTask, onAddTask, onDeleteTask, onEditUnit, onAddUnitClick, onDeleteUnit }: UnitGridProps) {
   
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -38,7 +38,7 @@ export function UnitGrid({ units, onReorder, onToggleTask, onAddTask, onDeleteTa
                 onToggleTask={onToggleTask}
                 onAddTask={onAddTask}
                 onDeleteTask={onDeleteTask}
-                onEditTitle={onEditTitle}
+                onEditTitle={() => onEditUnit(unit.id)}
                 onDeleteUnit={onDeleteUnit}
               />
             ))}
@@ -46,7 +46,7 @@ export function UnitGrid({ units, onReorder, onToggleTask, onAddTask, onDeleteTa
 
             {/* Add Unit Button */}
             <button 
-                onClick={onAddUnit}
+                onClick={onAddUnitClick}
                 className="bg-[#1e272b] p-6 rounded-xl border-2 border-dashed border-[#37464a] flex flex-col items-center justify-center text-gray-500 hover:text-[#ff8154] hover:border-[#ff8154] transition-all group min-h-[300px]"
              >
                 <Plus size={40} className="mb-2 group-hover:scale-110 transition-transform"/>

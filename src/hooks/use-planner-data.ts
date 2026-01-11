@@ -52,19 +52,14 @@ export function usePlannerData() {
     }));
   };
 
-  const editUnitTitle = (unitId: string, newTitle: string) => {
-    setUnits(prev => prev.map(u => u.id === unitId ? { ...u, title: newTitle } : u));
+  const updateUnit = (unitId: string, updates: Partial<Pick<Unit, "title" | "type">>) => {
+    setUnits(prev => prev.map(u => u.id === unitId ? { ...u, ...updates } : u));
   };
 
-  const addUnit = () => {
+  const createUnit = (title: string, type: Unit["type"]) => {
     setUnits(prev => [
       ...prev, 
-      { 
-        id: uuidv4(), 
-        title: "New Unit", 
-        type: "academic", 
-        tasks: [] 
-      }
+      { id: uuidv4(), title, type, tasks: [] }
     ]);
   };
 
@@ -89,7 +84,7 @@ export function usePlannerData() {
 
   return { 
       units, events, isLoaded, 
-      toggleTask, addTask, deleteTask, editUnitTitle, addUnit, deleteUnit, reorderUnits,
+      toggleTask, addTask, deleteTask, updateUnit, createUnit, deleteUnit, reorderUnits,
       addEvent, removeEvent
   };
 }

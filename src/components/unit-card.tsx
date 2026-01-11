@@ -8,7 +8,7 @@ interface UnitCardProps {
   onToggleTask: (unitId: string, taskId: string) => void;
   onAddTask: (unitId: string) => void;
   onDeleteTask: (unitId: string, taskId: string) => void;
-  onEditTitle: (unitId: string, currentTitle: string) => void;
+  onEditTitle: () => void;
   onDeleteUnit: (unitId: string) => void;
 }
 
@@ -29,7 +29,7 @@ export function UnitCard({ unit, index, onToggleTask, onAddTask, onDeleteTask, o
             ${snapshot.isDragging ? "shadow-2xl scale-[1.02] ring-2 ring-[#ff8154] z-50" : "hover:bg-[#324046]"}`}
           style={provided.draggableProps.style}
         >
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
               <button 
                 onClick={() => { if(confirm("Delete this unit?")) onDeleteUnit(unit.id) }}
                 className="text-gray-600 hover:text-red-500 p-1"
@@ -49,7 +49,7 @@ export function UnitCard({ unit, index, onToggleTask, onAddTask, onDeleteTask, o
                   {unit.type}
                 </span>
                 <button 
-                  onClick={() => onEditTitle(unit.id, unit.title)}
+                  onClick={onEditTitle}
                   className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-white transition-opacity"
                 >
                   <PencilSimple size={12}/>
